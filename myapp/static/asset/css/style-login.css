@@ -1,0 +1,437 @@
+@font-face {
+    font-family: Helvetica Neue;
+    src: url(../fonts/HelveticaNeue-CondensedRegular.woff2) format("woff2");
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: Helvetica Neue;
+    src: url(../fonts/HelveticaNeue-CondensedBold.woff2) format("woff2");
+    font-weight: 700;
+    font-style: normal
+}
+
+.align {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-bottom: 8px;
+    z-index: 1999;
+}
+
+.logo {
+    width: 120px;
+}
+
+.card {
+    height: 100%;
+    max-height: 446px;
+    width: 396px;
+    background: #121212;
+    border: 1px solid #373737;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: max-height 0.2s;
+}
+
+.extend {
+    max-height: 560px;
+}
+
+.head {
+    width: 100%;
+    display: flex;
+    height: 72px;
+    border-bottom: 1px solid #373737;
+    justify-content: space-between;
+}
+
+.head a {
+    height: 100%;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(140, 140, 140);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.head .selected {
+    position: relative;
+    color: #00FF5C;
+    font-weight: 700;
+}
+
+.head .selected:after {
+    position: absolute;
+    content: "";
+    bottom: 0;
+    left: 0;
+    height: 5px;
+    width: 100%;
+    background: #00FF5C;
+    border-radius: 99px 99px 0 0;
+}
+
+.tabs {
+    height: calc(100% - 72px);
+    display: flex;
+}
+
+form {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    padding: 44px 38px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    right: 0;
+    transition: right 0.2s;
+}
+
+.extend form {
+    right: 100%;
+}
+
+.inputs {
+    width: 100%;
+    padding-top: 6px;
+}
+
+.inputs input {
+    text-transform: lowercase;
+}
+
+input {
+    text-transform: capitalize;
+}
+
+.input {
+    position: relative;
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.input input {
+    width: 100%;
+    font-size: 17px;
+    background: #1C1C1C;
+    border-radius: 8px;
+    padding: 8px 18px 8px 51px;
+    color: rgb(220, 220, 220);
+}
+
+.input img {
+    width: 16px;
+    position: absolute;
+    left: 19px;
+}
+
+.checkbox {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.checkbox input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.checkbox span {
+    display: flex;
+    align-items: center;
+    color: rgb(110, 110, 110);
+    font-size: 16px;
+    user-select: none;
+}
+
+.checkbox span:before {
+    content: "";
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    margin-right: 16px;
+    background-color: #1C1C1C;
+}
+
+.checkbox:hover input ~ span:before {
+    background-color: rgb(50, 50, 50);
+}
+
+.checkbox input:checked ~ span:before {
+    background-image: url(../img/checked.png);
+    background-size: cover;
+}
+
+.card button {
+    display: block;
+    background: #00FF5C;
+    padding: 14px 52px;
+    border-radius: 12px;
+    color: #003B15;
+    font-weight: 700;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+
+.container {
+    padding: 16px;
+}
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 199; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: hidden; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 0% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 40%; /* Could be more or less, depending on screen size */
+    height: 40%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
+
+
+/*-------------------------*/
+
+
+body {
+    background-color: #1f1e1e;
+    font-family: "Lato", sans-serif;
+}
+
+.countdown {
+    display: flex;
+    justify-content: space-between;
+    margin: 20vh auto 0 auto;
+    width: 60%;
+    min-width: 800px;
+}
+
+.countdown .container {
+    position: relative;
+}
+
+.countdown .container svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.countdown .container .label {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.countdown .container .label span:first-of-type {
+    font-size: 55px;
+    color: #fff;
+}
+
+.countdown .container .label span:nth-of-type(2) {
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+@media screen and (max-width: 800px) {
+    .countdown {
+        flex-direction: column;
+        align-items: center;
+        height: 900px;
+        width: auto;
+        min-width: auto;
+    }
+}
+
+
+.btn.btn-dark {
+    padding: .575rem .75rem
+}
+
+
+#id10 .card span {
+    text-align: center;
+}
+
+
+.card-tlg {
+    height: 100%;
+    max-height: 446px;
+    width: 396px;
+    background: #121212;
+    border: 1px solid #373737;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: max-height 0.2s;
+}
+
+.slogan-block {
+    color: #f2a900;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 3rem;
+    line-height: 1.1;
+    letter-spacing: -.1rem;
+    text-transform: uppercase;
+    background: url(../img/font-fill.jpg) 50% repeat-x;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+.counters-block {
+    color: #f2a900;
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.counter-name span {
+    display: block;
+    color: #f2a900;
+}
+
+.counters-block .counter-wrap {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.counters-block .counter-name {
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bolder;
+    line-height: 1;
+}
+
+.counters-block .counter-wrap .counter-number {
+    text-align: center;
+    font-size: 26px;
+}
+
+
+.fill-progress {
+    position: relative;
+    margin-left: 6px;
+    top: 1px;
+}
+
+.fill-progress .fill-block_filled {
+    background-color: #fc0;
+}
+
+.fill-progress .fill-block {
+    display: inline-block;
+    width: 4px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 3px;
+    margin-right: 3px;
+    transform: rotate(30deg);
+}
+
+
+.col-lg-8 .description {
+    margin-bottom: 155px;
+}
+
+
+.container .col-lg-8 button {
+    background-image: url(../img/button-bg.png);
+    background-size: cover;
+    width: 325px;
+    height: 63px;
+    margin-left: 24rem;
+    color: black;
+    border-radius: 12px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.profile button {
+    background-image: url(../img/button-bg.png);
+    background-size: cover;
+    width: 325px;
+    height: 63px;
+    margin-left: 0px;
+    color: black;
+    border-radius: 12px;
+    font-size: 2rem;
+    font-weight: bold;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.menu-button {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}

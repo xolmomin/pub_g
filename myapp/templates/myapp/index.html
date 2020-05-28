@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+{% load static %}
+{% load crispy_forms_tags %}
+{% load mathfilters %}
+<html lang="en">
+<head>
+    <title>EndGam - Gaming</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="EndGam Gaming">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'asset/img/favicon.ico' %}" rel="shortcut icon"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'asset/css/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'asset/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'asset/css/font-awesome.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'asset/css/slicknav.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'asset/css/owl.carousel.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'asset/css/magnific-popup.css' %}"/>
+    <link rel="stylesheet" href="{% static 'asset/css/animate.css' %}"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'asset/css/style-login.css' %}">
+</head>
+<body>
+
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<header class="header-section">
+    <div class="header-warp">
+        <div class="header-social d-flex justify-content-end">
+            <p>Follow us:</p>
+            <a href="#"><i class="fa fa-pinterest"></i></a>
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fas fa-dribbble"></i></a>
+            <a href="#"><i class="fa fa-behance"></i></a>
+        </div>
+        <div class="header-bar-warp d-flex">
+            <p href="home.html" class="site-logo">
+                <img src="{% static 'asset/img/logo.png' %}">
+            </p>
+
+            <nav class="top-nav-area w-100">
+                <div class="user-panel" style="display: flex">
+                    {% if user.is_authenticated %}
+                        <p style="margin: 10px 20px"><span
+                                style="font: bold; color: forestgreen;">{{ user.username }}</span></p>
+                        <p style="margin: 10px 20px">Balance:&nbsp; <span
+                                style="font: bold; color: greenyellow;">{{ p_user.balance }}  ₽</span>
+                        </p>
+                        <p></p>
+                        <button id="AccountModalBtn" onclick="document.getElementById('id13').style.display = 'flex'"
+                                class="btn btn-dark">
+                            Мой профиль
+                        </button>
+
+                        <!--
+                        <a href="{% url 'logout_user' %}" class="btn btn-dark">
+                            Logout
+                        </a>
+-->
+                    {% else %}
+                        <button class="btn btn btn-dark" id="modalBtn">
+                            Регистрация / вход
+                        </button>
+                    {% endif %}
+                </div>
+                <ul class="main-menu primary-menu">
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li><a id="modalBtnRule" href="#" onclick="document.getElementById('id11').style.display='flex'">Правила</a>
+                    </li>
+                    <!--
+                    <li><a href="#">Games</a>B
+                        <ul class="sub-menu">
+                            <li><a href="#">Game Singel</a></li>
+                        </ul>
+                    </li>
+                    -->
+                    {% if user.is_authenticated %}
+                        <li><a href="#" id="modalBtnTlg">Телеграм бот</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+
+<section class="page-top-section set-bg" style="height: 465px;width: auto;"
+         data-setbg="{% static 'asset/img/pubg/header-bg.jpg' %}">
+    <div class="slogan-block">
+        <div class="first-line">
+            Участвуй в турнирах и получай
+        </div>
+        <div class="second-line">
+            деньги за каждый килл!
+        </div>
+    </div>
+    <div class="counters-block">
+
+        <div class="counter-wrap counter-1">
+            <div class="counter-number">
+                {{ user_count }}
+            </div>
+            <div class="counter-name">
+                Пользователей
+                <span>зарегистрировано:</span></div>
+        </div>
+
+        <div class="counter-wrap counter-2">
+            <div class="counter-number">
+                {{ tournaments.count }}
+            </div>
+            <div class="counter-name">
+                Турниров
+                <span>проведено:</span></div>
+        </div>
+
+        <div class="counter-wrap counter-3">
+            <div class="counter-number">
+                43242
+            </div>
+            <div class="counter-name">
+                (<i class="fas fa-ruble-sign" aria-hidden="true"></i>) Выплачено
+                <span>игрокам:</span></div>
+        </div>
+
+    </div>
+</section>
+
+
+<section class="review-section">
+    <div class="container">
+        {% for tour in tournaments %}
+            <div class="review-item">
+                <div class="row img-item">
+                    <div class="col-lg-4">
+                        <div class="review-pic">
+                            <img src="{% static 'asset/img/review/' %}{{ tour.id|mod:10 }}.jpg">
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="review-content text-box text-white">
+                            <div class="rating">
+                                <i><h5><span>2</span> / 5</h5></i>
+                            </div>
+                            <div class="top-meta">{{ tour.start_time }}</div>
+                            <div class="description">
+                                <h3>{{ tour.name }}</h3>
+                                <h3>Режим: .... Карта: ... Лицо: ....</h3>
+                            </div>
+                            <button class="btn btn-primary menu-button">
+                                {% if user.is_authenticated and p_user in tour %}
+                                    <a href="{% url 'add_tournament' tour.id %}">Записать уже</a>
+                                {% else %}
+                                    <a href="{% url 'add_tournament' tour.id %}">Записаться</a>
+                                {% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+<section class="newsletter-section">
+    <div class="container">
+        <h2>Subscribe to our newsletter</h2>
+        <form class="newsletter-form">
+            {% csrf_token %}
+            <input type="text" placeholder="ENTER YOUR E-MAIL">
+            <button class="site-btn">subscribe <img src="{% static 'asset/img/icons/double-arrow.png' %}" alt="#"/>
+            </button>
+        </form>
+    </div>
+</section>
+
+
+<footer class="footer-section">
+    <div class="container">
+        <div class="footer-left-pic">
+            <img src="{% static 'asset/img/footer-left-pic.png' %}">
+        </div>
+        <div class="footer-right-pic">
+            <img src="{% static 'asset/img/footer-right-pic.png' %}">
+        </div>
+        <a href="#" class="footer-logo">
+            <img src="{% static 'asset/img/logo.png' %}">
+        </a>
+        <div class="footer-social d-flex justify-content-center">
+            <a href="#"><i class="fa fa-pinterest"></i></a>
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-dribbble"></i></a>
+            <a href="#"><i class="fa fa-behance"></i></a>
+        </div>
+        <div class="copyright"><a href="">Sayt.uz</a> 2020 @ All rights reserved</div>
+    </div>
+</footer>
+
+
+<script src="{% static 'asset/js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'asset/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'asset/js/jquery.slicknav.min.js' %}"></script>
+<script src="{% static 'asset/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'asset/js/jquery.sticky-sidebar.min.js' %}"></script>
+<script src="{% static 'asset/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'asset/js/main.js' %}"></script>
+<script src="{% static 'asset/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'asset/js/index.js' %}"></script>
+<script src="{% static 'asset/js/odometer.js' %}"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+
+<div id="id01" class="align modal">
+    <div class="card">
+        <div class="imgcontainer">
+                    <span onclick="document.getElementById('id01').style.display='none'" class="close"
+                          title="Close Modal">&times;</span>
+        </div>
+        <div class="head">
+            <div></div>
+            <a id="login" class="selected" href="#login">Login</a>
+            <a id="register" href="#register">Register</a>
+            <div></div>
+        </div>
+        <div class="tabs">
+            <form action="{% url 'login_user' %}" method="post">
+                {% csrf_token %}
+                <div class="inputs">
+                    <div class="input">
+                        <input placeholder="Username" type="text" name="username">
+                        <img src="{% static 'asset/img/user.svg' %}">
+                    </div>
+                    <div class="input">
+                        <input placeholder="Password" type="password" name="password">
+                        <img src="{% static 'asset/img/pass.svg' %}">
+                    </div>
+                    <label class="checkbox">
+                        <input type="checkbox">
+                        <span>Remember me</span>
+                    </label>
+                </div>
+                {% if login_form.errors %}
+                    {% for field in login_form %}
+                        {% for error in field.errors %}
+                            <strong style="text-align: center;color: red;">{{ error|escape }}</strong>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+                <button type="submit">Login</button>
+            </form>
+            <form action="{% url 'signup' %}" method="post">
+                {% csrf_token %}
+                <div class="inputs">
+                    <div class="input">
+                        {{ form.username }}
+                        <img src="{% static 'asset/img/user.svg' %}">
+                    </div>
+
+                    <div class="input">
+                        {{ form.email }}
+                        <img src="{% static 'asset/img/mail.svg' %}">
+                    </div>
+
+                    <div class="input">
+                        {{ form.password1 }}
+                        <img src="{% static 'asset/img/pass.svg' %}">
+                    </div>
+
+                    <div class="input">
+                        {{ form.password2 }}
+                        <img src="{% static 'asset/img/pass.svg' %}">
+                    </div>
+
+                </div>
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <strong style="text-align: center;color: red;">{{ error|escape }}</strong>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+                <button>Register</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% if form.errors %}
+    <script>
+        var modal = document.getElementById('id01');
+        modal.style.display = 'flex'
+        $(".card").addClass("extend");
+        $("#login").removeClass("selected");
+        $("#register").addClass("selected");
+    </script>
+{% endif %}
+
+{% if login_form.errors %}
+    <script>
+        var modal = document.getElementById('id01');
+        modal.style.display = 'flex'
+        $("#login").addClass("selected");
+    </script>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <div id="id10" class="align modal">
+        <div class="card" style="height: 100%;
+    color: white;
+    max-height: 380px;
+    width: 450px;
+    background: #121212;
+    border: 1px solid #373737;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: max-height 0.2s;">
+            <div class="imgcontainer">
+                    <span onclick="document.getElementById('id10').style.display='none'" class="close"
+                          title="Close Modal">&times;</span>
+            </div>
+            <div class="head">
+                <h3 style="text-align: center; margin: 20px auto">Телеграм бот</h3>
+            </div>
+            <div style="text-align: center;margin: 45px 20px;"><span>Для того, чтобы использовать сервис,
+                        вовремя получать все уведомления о начале турниров,
+                        самые жаркие новости и данные для входа в игровой
+                        лобби, перейдите по <a href="#">ссылке</a> и
+                        авторизуйтесь</span> <br> <small>при входе в бот введите код:</small> <br>
+                <strong style="color: chartreuse">{{ user.id }}</strong></div>
+            <div style="text-align: center;">
+                <a href="http://t.me/rutournbot" target="_blank" class="btn btn-dark">Подключить</a>
+            </div>
+        </div>
+    </div>
+    <div id="id13" class="align modal">
+        <div class="card" style="height: 100%;
+    color: white;
+    max-height: 380px;
+    width: 450px;
+    background: #121212;
+    border: 1px solid #373737;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: max-height 0.2s;">
+            <div class="imgcontainer">
+                    <span onclick="document.getElementById('id13').style.display='none'" class="close"
+                          title="Close Modal">&times;</span>
+            </div>
+            <div class="head">
+                <h3 style="text-align: center; margin: 20px auto">МОЙ ПРОФИЛЬ</h3>
+            </div>
+
+            <div class="profile">
+                <div class="row">
+                    <div class="col-md-6 col-6 d-flex">
+                        <div class="profile-item">
+                            <div class="profile-item-title">Ник в PUBG</div>
+                            <div class="profile-item-value">
+                                pubg nickname
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-6 d-flex">
+                        <div class="profile-item">
+                            <div class="profile-item-title">ID в PUBG</div>
+                            <div class="profile-item-value">
+                                pubg id
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-6 d-flex">
+                        <div class="profile-item">
+                            <div class="profile-item-title">E-mail</div>
+                            <div class="profile-item-value">xolmomin@mail.ru
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-6 d-flex">
+                        <div class="profile-item">
+                            <div class="profile-item-title">Баланс</div>
+                            <div class="profile-item-value">1400₽
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center d-flex btn-div">
+                    <button id="paymentsBtn" class="btn btn-primary menu-button"
+                            onclick="document.getElementById('id15').style.display = 'flex';document.getElementById('id13').style.display = 'none'">
+                        <div class="circle"></div>
+                        <div class="caption">Пополнить</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="id15" class="align modal">
+        <div class="card" style="
+        height: 100%;
+        color: white;
+        max-height: 200px;
+        width: 430px;
+        background: #121212;
+        border: 1px solid #373737;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: max-height 0.2s;
+        ">
+            <div class="imgcontainer">
+                    <span onclick="document.getElementById('id15').style.display='none'" class="close"
+                          title="Close Modal">&times;</span>
+                <div class="profile" style="margin-top: 30px;">
+                    <div class="row">
+                        <div class="col-md-12 col-12 d-flex align">
+                            <div class="profile-item">
+                                    <label>Сумма</label>
+                                    <input type="number" inputmode="numeric" pattern="[0-9]*" placeholder="Введлите сумму" min="100" step="100"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="paymentsBtn" class="btn btn-primary menu-button payment-btn"
+                            style="width: 200px;height: 50px;align-content: center;margin: auto;font-size: inherit;">
+                        Пополнить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<div id="id11" class="align modal">
+    <div class="card" style="height: 100%;
+    color: white;
+    max-height: 380px;
+    width: 450px;
+    background: #121212;
+    border: 1px solid #373737;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: max-height 0.2s;">
+        <div class="imgcontainer">
+                    <span onclick="document.getElementById('id11').style.display='none'" class="close"
+                          title="Close Modal">&times;</span>
+        </div>
+        <div class="head">
+            <h3 style="text-align: center; margin: 20px auto">Правила</h3>
+        </div>
+        <div style="text-align: center;margin: 45px 20px;">
+            <span>
+                Участвовать могут только зарегистрированные пользователи (указывать исключительно верные данные, чтобы мы могли добавить вас в игровое лобби).
+            </span>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var modal = document.getElementById('id01');
+    var modalBtn = document.getElementById('modalBtn');
+
+    modalBtn.addEventListener('click', function () {
+        modal.style.display = 'flex'
+    })
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+{% if user.is_authenticated %}
+    {% if not p_user.telegram_id %}
+        <script>
+            document.getElementById('id10').style.display = 'flex'
+        </script>
+    {% endif %}
+{% endif %}
+
+<script>
+    var modalTlg = document.getElementById('id10');
+    var modalBtnTlg = document.getElementById('modalBtnTlg');
+
+    modalBtnTlg.addEventListener('click', function () {
+        modalTlg.style.display = 'flex'
+    })
+
+    window.onclick = function (event) {
+        if (event.target == modalTlg) {
+            modalTlg.style.display = "none";
+        }
+    }
+</script>
+
+<script>
+    var modalRule = document.getElementById('id11');
+    var modalBtnRule = document.getElementById('modalBtnRule');
+
+    window.onclick = function (event) {
+        if (event.target == modalRule) {
+            modalRule.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
